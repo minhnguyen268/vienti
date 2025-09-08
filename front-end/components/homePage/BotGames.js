@@ -2,6 +2,7 @@ import api from "@/configs/axios";
 import { useState, useEffect, useContext } from "react";
 import SocketContext from "@/context/socket";
 import { useTranslation } from "react-i18next";
+import { convertJSXMoney } from "@/utils/convertMoney";
 
 const GameMapping = {
   keno1p: "Keno1P",
@@ -42,7 +43,7 @@ const BotGames = () => {
       style={{
         background: "linear-gradient(124.32deg,#102d47 12.08%,#12304d 85.02%)",
         borderRadius: "10px",
-        marginTop: "10px",
+        marginTop: "20px",
         paddingTop: "0px",
         paddingBottom: "4px",
         maxHeight: "250px",
@@ -52,6 +53,22 @@ const BotGames = () => {
       }}
     >
       <div style={{ overflow: "auto", flex: 1, width: "100%" }}>
+        <div
+          style={{
+            padding: "16px",
+            fontSize: "18px",
+            fontWeight: "bold",
+            borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+            color: "#fff",
+            textAlign: "center",
+            position: "sticky",
+            top: 0,
+            zIndex: 1,
+            background: "linear-gradient(124.32deg,#102d47 12.08%,#12304d 85.02%)",
+          }}
+        >
+          {t("Đặt cược gần đây")}
+        </div>
         <table
           style={{
             width: "100%",
@@ -60,7 +77,7 @@ const BotGames = () => {
             borderRadius: "8px",
           }}
         >
-          <thead
+          {/* <thead
             style={{
               background: "transparent",
               position: "sticky",
@@ -101,23 +118,19 @@ const BotGames = () => {
                 {t("Số tiền")}
               </th>
             </tr>
-          </thead>
+          </thead> */}
           <tbody style={{ maxHeight: "200px", overflowY: "auto" }}>
-            {botGames.map((item) => (
+            {botGames.map((item, i) => (
               <tr
                 key={item._id}
                 style={{
-                  background: "transparent",
+                  background: i % 2 === 0 ? "rgba(255, 255, 255, 0.05)" : "transparent",
                   border: "none",
                 }}
               >
-                <td style={{ padding: "10px", background: "transparent", fontSize: "14px" }}>
-                  {t(GameMapping[item.game] || item.game)}
-                </td>
-                <td style={{ padding: "10px", background: "transparent", fontSize: "14px" }}>{item.taiKhoan}</td>
-                <td style={{ padding: "10px", background: "transparent", textAlign: "left", fontSize: "14px" }}>
-                  {item.soTien}
-                </td>
+                <td style={{ padding: "10px", fontSize: "14px" }}>{t(GameMapping[item.game] || item.game)}</td>
+                <td style={{ padding: "10px", fontSize: "14px" }}>{item.taiKhoan}***</td>
+                <td style={{ padding: "10px", fontSize: "14px" }}>{convertJSXMoney(item.soTien)}</td>
               </tr>
             ))}
           </tbody>
