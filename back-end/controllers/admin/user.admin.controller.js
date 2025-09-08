@@ -360,15 +360,6 @@ class UserAdminController {
       throw new BadRequestError("Vui lòng nhập đầy đủ thông tin");
     }
 
-    const users = await NguoiDung.find({ taiKhoan }).lean();
-    if (users.length !== 0) {
-      throw new BadRequestError("Tài khoản đã tồn tại");
-    }
-    const ht = await HeThong.findOne({ systemID: 1 }).lean();
-    if (ht.bots?.find((bot) => bot.taiKhoan === taiKhoan)) {
-      throw new BadRequestError("Tài khoản đã tồn tại");
-    }
-
     await HeThong.findOneAndUpdate(
       { systemID: 1 },
       {
@@ -378,6 +369,29 @@ class UserAdminController {
 
     return new OkResponse({
       message: "Tạo bot thành công",
+    }).send(res);
+  });
+  static updateBot = catchAsync(async (req, res, next) => {
+    const { taiKhoan } = req.body;
+    const { id } = req.params;
+    if (!taiKhoan) {
+      throw new BadRequestError("Vui lòng nhập đầy đủ thông tin");
+    }
+
+    const ht = await HeThong.findOne({ systemID: 1 }).lean();
+    if (!ht.bots.find((bot) => bot._id.toString() === id)) {
+      throw new BadRequestError("Bot không tồn tại");
+    }
+
+    await HeThong.findOneAndUpdate(
+      { systemID: 1, "bots._id": id },
+      {
+        $set: { "bots.$.taiKhoan": taiKhoan },
+      }
+    );
+
+    return new OkResponse({
+      message: "Update bot thành công",
     }).send(res);
   });
   static deleteBot = catchAsync(async (req, res, next) => {
