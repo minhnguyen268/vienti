@@ -1,0 +1,14 @@
+*.env
+*.md
+
+node_modules
+
+# Git file
+.git
+
+# Docker file
+*Dockerfile*
+*docker-compose*
+# Deploy folder and file
+.github
+.vscode

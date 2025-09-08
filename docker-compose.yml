@@ -1,0 +1,82 @@
+version: "3"
+services:
+  client_game:
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile
+      args:
+        NEXTAUTH_URL: http://venetianentertaimentcassino.com
+        ENDPOINT_SERVER: https://admin.venetianentertaimentcassino.com
+        NEXTAUTH_SECRET: bsad21451a2120d56rr95ca0f8e0bbcb
+        LIMIT_RESULTS: 10
+        JWT_ACCESSTOKEN_EXPIRED: 10d
+        JWT_REFRESHTOKEN_EXPIRED: 30d
+        MEMO_PREFIX_DEPOSIT: NAPTIEN
+    restart: always
+    ports:
+      - "3002:3002"
+    depends_on:
+      - server_game
+    networks:
+      - app-network
+
+  server_game:
+    build: ./back-end
+    ports:
+      - "8082:8082"
+    restart: always
+    volumes:
+      - ./back-end:/app/
+      - /app/node_modules
+    depends_on:
+      - mongo-service
+      - redis-service
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - ENDPOINT_CLIENT=${ENDPOINT_CLIENT}
+      - ENDPOINT_SERVER=${ENDPOINT_SERVER}
+      - DATABASE=${DATABASE}
+      - DATABASE_DEV=${DATABASE_DEV}
+      - REDIS=${REDIS}
+      - REDIS_DEV=${REDIS_DEV}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - JWT_ACCESSTOKEN_EXPIRED=${JWT_ACCESSTOKEN_EXPIRED}
+      - JWT_REFRESHTOKEN_EXPIRED=${JWT_REFRESHTOKEN_EXPIRED}
+      - BOT_TELEGRAM_TOKEN=${BOT_TELEGRAM_TOKEN}
+      - CASSO_SECURE_TOKEN=${CASSO_SECURE_TOKEN}
+      - MEMO_PREFIX_DEPOSIT=${MEMO_PREFIX_DEPOSIT}
+    networks:
+      - app-network
+  mongo-service:
+    image: mongo:4.4.6
+    ports:
+      - "27017:27017"
+    restart: always
+    command:
+      - --auth
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    volumes:
+      - ./docker-data/mongo-persistence:/data/db
+    networks:
+      - app-network
+  redis-service:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    restart: always
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    volumes:
+      - ./docker-data/redis-persistence/data:/root/redis
+      - ./docker-data/redis-persistence/redis.conf:/usr/local/etc/redis/redis.conf
+    command: bash -c "redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

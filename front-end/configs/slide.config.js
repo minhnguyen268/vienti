@@ -1,0 +1,1 @@
+export const ADMIN_LIST_SLIDES_PAGE_SIZE = 10;
