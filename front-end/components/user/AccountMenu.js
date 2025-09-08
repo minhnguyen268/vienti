@@ -80,7 +80,7 @@ const AccountMenu = () => {
         }}
       >
         {session && session.user && (session.user.role === "admin" || session.user.role === "manager") && (
-          <Link href={"/admin"}>
+          <Link href={"/admin/settings"}>
             <AccountMenuItem>
               <ManageAccountsIcon />
               <Typography className="title-menu">{t("Management")}</Typography>
