@@ -11,6 +11,8 @@ const Bots = () => {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [deleteId, setDeleteId] = useState();
+  const [editId, setEditId] = useState(null);
+  const [isEditMode, setIsEditMode] = useState(false);
   const [formData, setFormData] = useState({
     taiKhoan: "",
   });
@@ -30,8 +32,17 @@ const Bots = () => {
 
   const handleCloseCreateDialog = () => {
     setIsCreateDialogOpen(false);
+    setIsEditMode(false);
+    setEditId(null);
     setFormData({ taiKhoan: "" });
     setFormErrors({});
+  };
+
+  const handleEditBot = (bot) => {
+    setEditId(bot._id);
+    setIsEditMode(true);
+    setFormData({ taiKhoan: bot.taiKhoan });
+    setIsCreateDialogOpen(true);
   };
 
   const handleCreateBot = async () => {
@@ -52,6 +63,24 @@ const Bots = () => {
     }
   };
 
+  const handleUpdateBot = async () => {
+    const errors = validateForm();
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+
+    try {
+      await UserService.updateBot(editId, formData);
+      toast.success("Update tài khoản bot thành công");
+      refetch();
+      handleCloseCreateDialog();
+    } catch (error) {
+      console.error(error);
+      toast.error(error?.response?.data?.message ?? "Có lỗi xảy ra khi thực hiện");
+    }
+  };
+
   const GridColDef = [
     { field: "taiKhoan", headerName: "Tài khoản", flex: 1 },
     { field: "createdAt", headerName: "Thời gian tạo", width: 250 },
@@ -61,6 +90,20 @@ const Bots = () => {
       type: "actions",
       width: 150,
       getActions: (params) => [
+        <button
+          style={{
+            cursor: "pointer",
+            color: "white",
+            backgroundColor: "#1976d2",
+            padding: "5px 12px",
+            borderRadius: "5px",
+            border: "none",
+            marginRight: "8px",
+          }}
+          onClick={() => handleEditBot(params.row)}
+        >
+          Sửa
+        </button>,
         <button
           style={{
             cursor: "pointer",
@@ -147,7 +190,7 @@ const Bots = () => {
       </div>
 
       <Dialog open={isCreateDialogOpen} onClose={handleCloseCreateDialog} maxWidth="sm" fullWidth>
-        <DialogTitle>Tạo bot mới</DialogTitle>
+        <DialogTitle>{isEditMode ? "Chỉnh sửa bot" : "Tạo bot mới"}</DialogTitle>
         <DialogContent>
           <div style={{ marginBottom: "16px" }}>
             <label style={{ display: "block", marginBottom: "8px", fontWeight: "500", fontSize: "15px" }}>
@@ -181,8 +224,11 @@ const Bots = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseCreateDialog}>Hủy</Button>
-          <Button onClick={handleCreateBot} variant="contained">
-            Tạo bot
+          <Button 
+            onClick={isEditMode ? handleUpdateBot : handleCreateBot} 
+            variant="contained"
+          >
+            {isEditMode ? "Cập nhật" : "Tạo bot"}
           </Button>
         </DialogActions>
       </Dialog>
