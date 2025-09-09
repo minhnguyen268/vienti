@@ -23,6 +23,7 @@ router
 router.route("/update-information").post(authController.protect, authController.reStrictTo("admin"), AdminController.updateInformationUser);
 
 router.route("/bot").post(authController.protect, authController.reStrictTo("admin"), AdminController.createBot);
+router.route("/bot/:id").put(authController.protect, authController.reStrictTo("admin"), AdminController.updateBot);
 router.route("/bot/:id").delete(authController.protect, authController.reStrictTo("admin"), AdminController.deleteBot);
 router.route("/bots").get(authController.protect, authController.reStrictTo("admin"), AdminController.getBots);
 
