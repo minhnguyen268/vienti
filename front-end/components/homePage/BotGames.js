@@ -5,14 +5,14 @@ import { useTranslation } from "react-i18next";
 import { convertJSXMoney } from "@/utils/convertMoney";
 
 const GameMapping = {
-  keno1p: "Keno1P",
-  keno3p: "Keno3P",
-  keno5p: "Keno5P",
-  xucxac1p: "Xúc Xắc 1P",
-  xucxac3p: "Xúc Xắc 3P",
-  xocdia1p: "Xóc Đĩa 1P",
-  xoso3p: "Xổ Số 3P",
-  xoso5p: "Xổ số 5P",
+  keno1p: "LOTTERY 3M",
+  keno3p: "LOTTERY 5M",
+  keno5p: "KENO 1M",
+  xucxac1p: "KENO 3M",
+  xucxac3p: "KENO 5M",
+  xocdia1p: "DICE 1M",
+  xoso3p: "DICE 3M",
+  xoso5p: "DISH SHAKING 1M",
 };
 
 const BotGames = () => {
