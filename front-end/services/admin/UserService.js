@@ -90,6 +90,10 @@ class UserService {
     const result = await api.post(`/v1/admin/users/bot`, data);
     return result;
   };
+  static updateBot = async (id, data) => {
+    const result = await api.put(`/v1/admin/users/bot/${id}`, data);
+    return result;
+  };
   static deleteBot = async (id) => {
     const result = await api.delete(`/v1/admin/users/bot/${id}`);
     return result;
