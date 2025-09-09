@@ -13,13 +13,13 @@
   "SystemNotification": "System Notification",
   "Close": "Close",
   "LOTTERY 3M": "EXTREMELY FAST",
-  "LOTTERY 5M": "LUCKY",
-  "KENO 1M": "HOME",
-  "KENO 3M": "VIETNAM",
-  "KENO 5M": "LUCKY",
-  "DICE 1M": "VIETNAM",
-  "DICE 3M": "LUCKY",
-  "DISH SHAKING 1M": "VIETNAM",
+  "LOTTERY 5M": "LUCKY NUMBER",
+  "KENO 1M": "LUCKY SPACEBALL",
+  "KENO 3M": "KING OF SPEED",
+  "KENO 5M": "LUCKY KENO",
+  "DICE 1M": "K1 SPACESHIP",
+  "DICE 3M": "ABUNDANT WEALTH",
+  "DISH SHAKING 1M": "LUCKY NEKO",
   "Mo ta xo so 3p": "PK",
   "Mo ta xo so 5p": "Color time",
   "Mo ta keno 1p": "2 color point",
@@ -265,5 +265,6 @@
   "Quả bóng thứ năm": "Fifth ball",
   "Mã giới thiệu không được để trống": "Referral code must not be empty",
   "Bạn chỉ được phép rút tối đa 3 lần mỗi ngày": "You are only allowed to withdraw up to 3 times a day",
-  "Trò chơi": "Game"
+  "Trò chơi": "Game",
+  "Đặt cược gần đây": "Recent bets"
 }
